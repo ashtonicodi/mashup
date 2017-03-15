@@ -1,0 +1,9 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+	{% for entry in entry_list %}
+		<a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a><br>
+	{% empty %}
+		<p>Entry list is empty.</p>
+	{% endfor %}
+{% endblock content %}
