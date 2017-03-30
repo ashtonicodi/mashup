@@ -1,4 +1,6 @@
 '''Preview for entry'''
+from collections import deque
+
 from django.utils.functional import cached_property
 from django.utils.html import strip_tags
 from django.utils.text import Truncator
@@ -55,7 +57,7 @@ class HTMLPreview:
         '''
         for splitter in self.splitters:
             if splitter in self.content:
-                return self.split(splitter).prettify()
+                return self.split(splitter).get_text()
         return self.truncate()
 
     def truncate(self):
@@ -73,9 +75,12 @@ class HTMLPreview:
         '''
         soup = BeautifulSoup(self.content.split(splitter)[0],
                              'html.parser')
-        last_string = soup.find_all()[-1]
+        last_string = soup.find_all(text=False)[-1]
         last_string.replace_with(last_string.string + self.more_string)
         return soup
+
+    def alter_split(self, splitter):
+        pass
 
     @cached_property
     def total_words(self):

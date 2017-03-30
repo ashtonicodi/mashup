@@ -79,9 +79,9 @@ class EntryHtmlContentTestCase(TestCase):
 
     def test_preview(self):
         large_content = (
-            '<p>Lorem ipsum dolor sit amet, consectetur '
+            '<p>Lorem <i>ipsum dolor sit amet, consectetur '
             'adipisicing elit<!--more-->. Porro repudiandae sapiente '
-            'eaque velit earum deleniti impedit accusamus, '
+            'eaque velit earum deleniti</i> impedit accusamus, '
             'corporis quia sit ex necessitatibus adipisci '
             'totam. Est non saepe harum aliquid quia, '
             'explicabo officiis ex quas! Eos doloremque '
@@ -94,8 +94,93 @@ class EntryHtmlContentTestCase(TestCase):
         self.entry.content = large_content
 
         preview = (
-            '<p>Lorem ipsum dolor sit amet, consectetur '
-            'adipisicing elit ...</p>'
+            'Lorem ipsum dolor sit amet, consectetur '
+            'adipisicing elit ...'
         )
-        print(self.entry.html_preview)
         self.assertEqual(str(self.entry.html_preview), preview)
+
+    def test_percentage(self):
+
+        large_content = (
+            '<p>Lorem <i>ipsum dolor sit amet, consectetur '
+            'adipisicing elit<!--more-->. Porro repudiandae sapiente '
+            'eaque velit earum deleniti</i> impedit accusamus, '
+            'corporis quia sit ex necessitatibus adipisci '
+            'totam. Est non saepe harum aliquid quia, '
+            'explicabo officiis ex quas! Eos doloremque '
+            'quis ut eaque quos omnis quam, nihil, harum '
+            'ex, assumenda eveniet. Recusandae eaque '
+            'officiis quis nobis, quae aliquam tempora '
+            'molestiae. Animi velit beatae eaque.</p>'
+        )
+
+        self.entry.content = large_content
+
+        self.assertEqual(
+            self.entry.html_preview.displayed_percent +
+            self.entry.html_preview.remaining_percent,
+            100.00
+        )
+
+    def test_displaed_words(self):
+
+        large_content = (
+            '<p>Lorem <i>ipsum dolor sit amet, consectetur '
+            'adipisicing elit<!--more-->. Porro repudiandae sapiente '
+            'eaque velit earum deleniti</i> impedit accusamus, '
+            'corporis quia sit ex necessitatibus adipisci '
+            'totam. Est non saepe harum aliquid quia, '
+            'explicabo officiis ex quas! Eos doloremque '
+            'quis ut eaque quos omnis quam, nihil, harum '
+            'ex, assumenda eveniet. Recusandae eaque '
+            'officiis quis nobis, quae aliquam tempora '
+            'molestiae. Animi velit beatae eaque.</p>'
+        )
+
+        self.entry.content = large_content
+
+        self.assertEqual(
+            self.entry.html_preview.displayed_words,
+            9
+        )
+
+    def test_remaining_words(self):
+
+        large_content = (
+            '<p>Lorem <i>ipsum dolor sit amet, consectetur '
+            'adipisicing elit<!--more--> Porro repudiandae sapiente '
+            'eaque velit earum deleniti</i> impedit accusamus, '
+            'corporis quia sit ex necessitatibus adipisci '
+            'totam. Est non saepe harum aliquid quia, '
+            'explicabo officiis ex quas! Eos doloremque '
+            'quis ut eaque quos omnis quam, nihil, harum '
+            'ex, assumenda eveniet. Recusandae eaque '
+            'officiis quis nobis, quae aliquam tempora '
+            'molestiae. Animi velit beatae eaque.</p>'
+        )
+
+        self.entry.content = large_content
+
+        self.assertEqual(
+            self.entry.html_preview.remaining_words,
+            51
+        )
+
+    def test_has_more(self):
+
+        large_content = (
+                '<p>Lorem <i>ipsum dolor sit amet, consectetur '
+                'adipisicing elit<!--more--> Porro repudiandae sapiente '
+                'eaque velit earum deleniti</i> impedit accusamus, '
+                'corporis quia sit ex necessitatibus adipisci '
+                'totam. Est non saepe harum aliquid quia, '
+                'explicabo officiis ex quas! Eos doloremque '
+                'quis ut eaque quos omnis quam, nihil, harum '
+                'ex, assumenda eveniet. Recusandae eaque '
+                'officiis quis nobis, quae aliquam tempora '
+                'molestiae. Animi velit beatae eaque.</p>'
+            )
+
+        self.entry.content = large_content
+
+        self.assertTrue(self.entry.html_preview.has_more)
