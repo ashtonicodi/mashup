@@ -4,3 +4,5 @@ from django.views.generic.detail import DetailView
 
 
 # Create your views here.
+def entry_list(request):
+    pass
