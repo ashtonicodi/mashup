@@ -1,9 +1,81 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-	{% for entry in entry_list %}
-		<a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a><br>
-	{% empty %}
-		<p>Entry list is empty.</p>
-	{% endfor %}
+     <div class="container">
+
+          <div class="blog-header">
+            <h1 class="blog-title">The Bootstrap Blog</h1>
+            <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+          </div>
+
+          <div class="row">
+              <div class="col-sm-8 blog-main">
+                  {% for entry in entries %}
+                      <hr>
+                      <h4 class="blog-post-title"><a href="{% url 'entry_detail' entry_id=entry.pk %}">{{ entry.title }}</a></h4>
+                      <p class="blog-post-meta">Pubplication date: {{ entry.publication_date|date }} by <a href="#">Mark</a></p>
+                      {% if entry.image %}
+                          <img src='{{ entry.image.url }}'>
+                      {% endif %}
+                      {{ entry.html_preview|safe }}
+                      <p><a class='btn btn-primary' href='{% url 'entry_detail' entry_id=entry.pk %}' role='button'>View details &raquo;</a></p>
+                  {% empty %}
+                      <p>Entry list is empty.</p>
+                  {% endfor %}
+              </div>
+
+              <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+              <div class="sidebar-module sidebar-module-inset">
+                <h4>About</h4>
+                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+              </div>
+              <div class="sidebar-module">
+                <h4>Archives</h4>
+                <ol class="list-unstyled">
+                  <li><a href="#">January 2014</a></li>
+                  <li><a href="#">December 2013</a></li>
+                  <li><a href="#">November 2013</a></li>
+                  <li><a href="#">October 2013</a></li>
+                  <li><a href="#">September 2013</a></li>
+                  <li><a href="#">August 2013</a></li>
+                  <li><a href="#">July 2013</a></li>
+                  <li><a href="#">June 2013</a></li>
+                  <li><a href="#">May 2013</a></li>
+                  <li><a href="#">April 2013</a></li>
+                  <li><a href="#">March 2013</a></li>
+                  <li><a href="#">February 2013</a></li>
+                </ol>
+              </div>
+              <div class="sidebar-module">
+                <h4>Elsewhere</h4>
+                <ol class="list-unstyled">
+                  <li><a href="#">GitHub</a></li>
+                  <li><a href="#">Twitter</a></li>
+                  <li><a href="#">Facebook</a></li>
+                </ol>
+              </div>
+            </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+          </div>
+          {% if page_obj.paginator.num_pages > 1 %}
+              <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li><a href='{% url 'entry_list' page=page_obj.previous_page_number %}'>&laquo;</a></li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if num == page_obj.number %}
+                        <li class="active"><span>{{ num }}<span class="sr-only">(current)</span></span></li>
+                    {% else %}
+                        <li><a href='{% url 'entry_list' page=num %}'>{{ num }}</a></li>
+                    {% endif %}
+
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li><a href='{% url 'entry_list' page=page_obj.next_page_number %}'>&raquo;</a></li>
+                {% endif %}
+              </ul>
+          {% endif %}
+     </div>
 {% endblock content %}

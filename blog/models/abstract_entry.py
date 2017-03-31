@@ -96,7 +96,7 @@ class CoreEntry(models.Model):
         Builds and returns the entry's URL based on
         the ID.
         '''
-        return ('blog:category_detail', (self.pk,))
+        return ('entry_detail', (self.pk,))
 
     def __str__(self):
         return '%s: %s' % (self.title, self.get_status_display())

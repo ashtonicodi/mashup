@@ -18,10 +18,14 @@
     <meta name="author" content="HumanityNoise" />
     {% block meta %}{% endblock meta %}
     {% block link %}{% endblock link %}
+    <link rel='stylesheet' href='{% static 'bootstrap/css/bootstrap.css' %}'>
 </head>
 <body>
+    {% block header %}{% endblock %}
 	{% block content %}{% endblock content %}
 	{% block footer %}{% endblock footer %}	
 	{% block script %}{% endblock script %}
+    <script src='{% static 'bootstrap/js/jquery.min.1.11.0.js' %}'></script>
+    <script src='{% static 'bootstrap/js/bootstrap.min.js' %}'></script>
 </body>
 </html>
