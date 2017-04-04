@@ -1,0 +1,1 @@
+from mashup.settings.develop import *

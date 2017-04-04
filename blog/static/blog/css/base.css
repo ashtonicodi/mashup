@@ -5,6 +5,7 @@
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
   color: #555;
+  margin-bottom: -150px;
 }
 
 h1, .h1,
